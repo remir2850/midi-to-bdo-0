@@ -48,8 +48,7 @@ BDO music files are stored in:
 |---|---|
 | Beginner | Guitar, Flute, Recorder, Hand Drum, Cymbals, Harp, Piano, Violin |
 | Florchestra | Acoustic Guitar, Flute, Drum Set, Marnibass, Contrabass, Harp, Piano, Violin, Handpan, Clarinet, Horn |
-| Marnian | Wavy Planet, Illusion Tree, Secret Note, Sandwich |
-| Electric Guitar | Silver Wave, Highway, Hexe Glam |
+| Marnian | Wavy Planet, Illusion Tree, Secret Note, Sandwich, Silver Wave, Highway, Hexe Glam |
 
 ## Build from source
 
