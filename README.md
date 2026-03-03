@@ -1,16 +1,19 @@
 # MIDI to BDO Converter
 
-Convert standard MIDI files to Black Desert Online's music composer.
+Convert standard MIDI files to Black Desert Online's music composer format (v9).
 
 ## Features
 
-- Multi-instrument support, automatically maps MIDI channels to BDO instruments
+- Multi-instrument support — automatically maps MIDI channels to BDO instruments
+- GM percussion mapping (drum kit)
 - Sustain pedal support (CC64)
 - Tempo flattening for multi-tempo MIDIs
 - Velocity control (stepped, rescale, or floor modes)
 - Transpose
 - Effector settings (reverb, delay, chorus)
 - Owner ID loading from existing BDO files (for in-game edit access)
+- Dark themed GUI matching BDO's aesthetic
+
 ## Download
 
 Go to the [Releases](https://github.com/Bishop-R/midi-to-bdo/releases) page and download:
@@ -33,7 +36,7 @@ No installation or Python required — just run the executable.
 
 To edit your composition in-game, you need to embed your account's owner ID:
 
-1. Save any composition in BDO's music composer
+1. Save any composition in BDO's music composer (even a blank one)
 2. In the converter, click **Load ID from BDO file** and select that saved file
 3. Your character name and owner ID will be loaded automatically
 
@@ -42,7 +45,27 @@ BDO music files are stored in:
 
 ## Supported Instruments
 
-Beginner | Guitar, Flute, Recorder, Hand Drum, Cymbals, Harp, Piano, Violin |
-Florchestra | Acoustic Guitar, Flute, Drum Set, Marnibass, Contrabass, Harp, Piano, Violin, Handpan, Clarinet, Horn |
-Marnian | Wavy Planet, Illusion Tree, Secret Note, Sandwich |
-Electric Guitar | Silver Wave, Highway, Hexe Glam |
+| Category | Instruments |
+|---|---|
+| Beginner | Guitar, Flute, Recorder, Hand Drum, Cymbals, Harp, Piano, Violin |
+| Florchestra | Acoustic Guitar, Flute, Drum Set, Marnibass, Contrabass, Harp, Piano, Violin, Handpan, Clarinet, Horn |
+| Marnian | Wavy Planet, Illusion Tree, Secret Note, Sandwich |
+| Electric Guitar | Silver Wave, Highway, Hexe Glam |
+
+## Build from source
+
+Requires Python 3.10+.
+
+```bash
+pip install -r requirements.txt
+python midi2bdo_gui.py
+```
+
+To build a standalone executable:
+
+```bash
+pip install pyinstaller
+python build.py
+```
+
+The executable will be in `dist/`.
