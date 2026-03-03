@@ -33,7 +33,7 @@ _NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 def note_name(midi_note):
     return f"{_NOTE_NAMES[midi_note % 12]}{midi_note // 12 - 1}"
 
-# ── Native file dialog ────────────────────────────────────────────
+# Native file dialog
 _HAS_KDIALOG = shutil.which('kdialog') is not None
 
 def _native_open(title='Open', initialdir=None, filetypes=None):
@@ -63,7 +63,7 @@ def _native_open(title='Open', initialdir=None, filetypes=None):
                                       filetypes=filetypes or [])
 
 
-# ── BDO Color Palette ──────────────────────────────────────────────
+# BDO Color Palette
 BDO = {
     'bg_dark':     '#161618',
     'bg':          '#1d1d1f',
@@ -158,7 +158,7 @@ class ScrollableComboBox(ctk.CTkFrame):
         w = self.winfo_width()
         font_size = max(9, int(9 * scale))
 
-        # Raw canvas + scrollbar (no CTkScrollableFrame — avoids bind_all conflicts)
+        # Raw canvas + scrollbar
         canvas = tk.Canvas(dd, bg=BDO['surface'], highlightthickness=0,
                            width=w - 14, height=h)
         scrollbar = tk.Scrollbar(dd, orient='vertical', command=canvas.yview,
@@ -310,8 +310,7 @@ class App(ctk.CTk):
 
         self._build_ui()
 
-        # Size window to fit content (CTkScrollableFrame doesn't propagate
-        # its content size, so we measure the inner frame and set geometry).
+        # Size window to fit content
         self.update_idletasks()
         content_w = self._scroll_frame.winfo_reqwidth() + 40  # padding + scrollbar
         content_h = self._scroll_frame.winfo_reqheight() + 80  # bottom bar + padding
@@ -319,7 +318,7 @@ class App(ctk.CTk):
         self.geometry(f'{max(content_w, 520)}x{min(content_h, max_h)}')
         self.minsize(520, 400)
 
-    # ── UI construction ────────────────────────────────────────────
+    # UI construction
 
     def _build_ui(self):
         pad = dict(padx=6, pady=3)
@@ -333,14 +332,12 @@ class App(ctk.CTk):
         outer.rowconfigure(0, weight=1)
         outer.columnconfigure(0, weight=1)
 
-        # ── Scrollable area ──
+        # Scrollable area
         scroll = ctk.CTkScrollableFrame(outer, fg_color=BDO['bg_light'])
         scroll.grid(row=0, column=0, sticky='nsew')
         self._scroll_frame = scroll
 
-        # Unified scroll handler — replaces CTkScrollableFrame's own
-        # <MouseWheel> bind_all (no add='+') so there's only ONE handler.
-        # Routes to dropdown canvas when open, main canvas otherwise.
+        # Unified scroll handler
         def _scroll_target():
             inst = ScrollableComboBox._open_instance
             if inst is not None and inst._dd_canvas is not None:
@@ -351,7 +348,7 @@ class App(ctk.CTk):
             target = _scroll_target()
             if not event.delta:
                 return
-            # Windows delta is ±120 (or multiples), Linux/macOS is ±1
+            # Windows delta is ±120 (or multiples), Linux is ±1
             if sys.platform.startswith('win'):
                 units = -int(event.delta / 40)  # ±3 per tick
             elif sys.platform == 'darwin':
@@ -360,10 +357,10 @@ class App(ctk.CTk):
                 units = -3 if event.delta > 0 else 3
             target.yview_scroll(units, 'units')
 
-        # Replace (not add to) CTkScrollableFrame's own MouseWheel handler
+        # Replace CTkScrollableFrame's own MouseWheel handler
         scroll.bind_all('<MouseWheel>', _on_mousewheel)
 
-        # Linux X11 scroll events (Button-4/5 don't exist on Windows/macOS)
+        # Linux X11 scroll events (Button-4/5 don't exist on Windows)
         if not sys.platform.startswith('win') and sys.platform != 'darwin':
             def _on_button4(event):
                 _scroll_target().yview_scroll(-3, 'units')
@@ -375,7 +372,7 @@ class App(ctk.CTk):
         frame = scroll
         row = 0
 
-        # ── File selection ──
+        # File selection
         ctk.CTkLabel(frame, text="Input MIDI:", text_color=BDO['gold_light']).grid(
             row=row, column=0, sticky='e', **pad)
         ctk.CTkEntry(frame, textvariable=self.midi_path, width=350).grid(
@@ -391,7 +388,7 @@ class App(ctk.CTk):
             row=row, column=1, columnspan=2, sticky='we', **pad)
         row += 1
 
-        # ── Settings ──
+        # Settings
         settings_container, sep = _make_section(frame, "Settings")
         settings_container.grid(row=row, column=0, columnspan=4, sticky='we', pady=(8, 4), padx=4)
         row += 1
@@ -412,7 +409,7 @@ class App(ctk.CTk):
         ctk.CTkLabel(sep, text="semitones",
                      text_color=BDO['text_dim']).grid(row=r, column=2, sticky='w', **pad)
 
-        # ── Velocity ──
+        # Velocity
         vel_container, vel = _make_section(frame, "Velocity")
         vel_container.grid(row=row, column=0, columnspan=4, sticky='we', pady=(4, 4), padx=4)
         row += 1
@@ -459,7 +456,7 @@ class App(ctk.CTk):
 
         self._update_vel_fields()
 
-        # ── Options ──
+        # Options
         opt_container, opt = _make_section(frame, "Options")
         opt_container.grid(row=row, column=0, columnspan=4, sticky='we', pady=(4, 4), padx=4)
         row += 1
@@ -470,7 +467,7 @@ class App(ctk.CTk):
                         variable=self.flatten_tempo, onvalue=True, offvalue=False,
                         command=self._on_option_toggle).grid(sticky='w', padx=6, pady=3)
 
-        # ── Effector ──
+        # Effector
         eff_container, eff = _make_section(frame, "Effector", collapsed=True)
         eff_container.grid(row=row, column=0, columnspan=4, sticky='we', pady=(4, 4), padx=4)
         row += 1
@@ -493,7 +490,7 @@ class App(ctk.CTk):
         _make_slider(eff, 3, "Chorus Depth:", self.chorus_depth)
         _make_slider(eff, 4, "Chorus Freq:", self.chorus_freq)
 
-        # ── MIDI info ──
+        # MIDI info
         info_container, info = _make_section(frame, "MIDI Info")
         info_container.grid(row=row, column=0, columnspan=4, sticky='we', pady=(4, 4), padx=4)
         row += 1
@@ -501,7 +498,7 @@ class App(ctk.CTk):
                                         text_color=BDO['text_dim'])
         self._info_label.grid(sticky='w', padx=6, pady=3)
 
-        # ── Instruments ──
+        # Instruments
         inst_container, self._instrument_frame = _make_section(frame, "Instruments")
         inst_container.grid(row=row, column=0, columnspan=4, sticky='we', pady=(4, 4), padx=4)
         self._inst_container = inst_container
@@ -511,24 +508,24 @@ class App(ctk.CTk):
                                            text_color=BDO['text_dim'])
         self._no_inst_label.grid(sticky='w', padx=6, pady=3)
 
-        # ── Fixed bottom bar (outside scrollable area) ──
+        # Fixed bottom bar (outside scrollable area)
         bottom = ctk.CTkFrame(outer, fg_color='transparent')
         bottom.grid(row=1, column=0, sticky='we', pady=(6, 10))
 
-        # ── Convert button — gold accent ──
+        # Convert button — gold accent 
         ctk.CTkButton(bottom, text="Convert", command=self._convert,
                       fg_color=BDO['gold_dark'], hover_color=BDO['gold'],
                       text_color=BDO['bg_dark'],
                       font=ctk.CTkFont(size=14, weight='bold'),
                       height=36).pack(fill='x', padx=40, pady=(0, 4))
 
-        # ── Status bar ──
+        # Status bar
         status_frame = ctk.CTkFrame(bottom, fg_color=BDO['bg'], corner_radius=4)
         status_frame.pack(fill='x', padx=4)
         ctk.CTkLabel(status_frame, textvariable=self.status_text,
                      text_color=BDO['text_gold']).pack(anchor='w', padx=6, pady=2)
 
-    # ── Helpers ────────────────────────────────────────────────────
+    # Helpers
 
     def _update_vel_fields(self):
         mode = self.vel_mode.get()
