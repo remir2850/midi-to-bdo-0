@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Convert MIDI files to Black Desert Online music composer format (v9)."""
+"""Convert MIDI files to Black Desert Online music composer format."""
 
 import argparse
 from collections import defaultdict, namedtuple
