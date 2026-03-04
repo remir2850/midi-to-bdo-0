@@ -6,7 +6,6 @@ Convert standard MIDI files to Black Desert Online's music composer format.
 
 - Multi-instrument support - automatically maps MIDI channels to BDO instruments
 - GM percussion mapping (drum kit)
-- Sustain pedal support (CC64)
 - Tempo flattening for multi-tempo MIDIs
 - Velocity control (layered, stepped, rescale, or floor modes)
 - Transpose
