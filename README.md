@@ -8,7 +8,7 @@ Convert standard MIDI files to Black Desert Online's music composer format.
 - GM percussion mapping (drum kit)
 - Sustain pedal support (CC64)
 - Tempo flattening for multi-tempo MIDIs
-- Velocity control (stepped, rescale, or floor modes)
+- Velocity control (layered, stepped, rescale, or floor modes)
 - Transpose
 - Effector settings (reverb, delay, chorus)
 - Owner ID loading from existing BDO files (for in-game edit access)
