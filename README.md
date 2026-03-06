@@ -37,7 +37,7 @@ When converting it will create a "midi" and a "converted" folder next to it.
 
 To edit your composition in-game, you need to embed your account's owner ID:
 
-1. Save any composition in BDO's music composer
+1. Save a new composition in BDO's music composer, a single note is enough.
 2. In the converter, click **Load ID from BDO file** and select that saved file
 3. Your character name and owner ID will be loaded automatically
 
