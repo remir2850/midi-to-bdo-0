@@ -3,7 +3,7 @@
 Implements just enough of the ICE algorithm
 for BDO music file creation.  There is no general-purpose decrypt function.
 The only decrypt capability is limited to extracting the owner ID from
-single-note files (< 512 bytes).
+single-note files.
 """
 
 
@@ -196,3 +196,4 @@ def decrypt_owner_header(ciphertext):
     if remaining > 0:
         out.extend(ciphertext[i:])
     return bytes(out)
+
